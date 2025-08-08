@@ -1,5 +1,5 @@
 {
-  "name": "mern-todo-server",
+  "name": "mern_todo_server",
   "version": "1.0.0",
   "description": "Backend for MERN Todo App",
   "main": "server.js",

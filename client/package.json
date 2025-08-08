@@ -1,5 +1,5 @@
 {
-  "name": "mern-todo-client",
+  "name": "mern_todo_client",
   "version": "1.0.0",
   "description": "Frontend for MERN Todo App",
   "main": "index.js",
