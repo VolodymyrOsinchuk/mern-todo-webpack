@@ -1,53 +1,70 @@
-const path = require('path')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// webpack.config.js
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === "production";
+const API_PROXY_TARGET =
+  process.env.API_PROXY_TARGET || "http://localhost:5000";
+
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
-    publicPath: '/',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[contenthash].js",
+    publicPath: "/",
     clean: true,
   },
-  mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? 'source-map' : 'inline-source-map',
+  mode: isProduction ? "production" : "development",
+  devtool: isProduction ? "source-map" : "inline-source-map",
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: "babel-loader",
         },
       },
       {
         test: /\.css$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [
+          isProduction ? MiniCssExtractPlugin.loader : "style-loader",
+          "css-loader",
+        ],
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: [".js", ".jsx"],
     alias: {
-      '@': path.resolve(__dirname, 'src'),
+      "@": path.resolve(__dirname, "src"),
+    },
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
     },
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
-      filename: 'index.html',
+      template: "./public/index.html",
+      filename: "index.html",
     }),
-    new MiniCssExtractPlugin({
-      filename: 'styles.[contenthash].css',
-    }),
+    ...(isProduction
+      ? [
+          new MiniCssExtractPlugin({
+            filename: "styles.[contenthash].css",
+          }),
+        ]
+      : []),
   ],
   devServer: {
+<<<<<<< HEAD
     static: {
       directory: path.join(__dirname, 'public'),
     },
@@ -57,5 +74,17 @@ module.exports = {
     proxy: {
       '/api': 'http://localhost:5001',
     },
+=======
+    static: path.resolve(__dirname, "public"),
+    historyApiFallback: true,
+    port: 3000,
+    hot: true,
+    proxy: [
+      {
+        context: ["/api"],
+        target: API_PROXY_TARGET,
+      },
+    ],
+>>>>>>> 0a27e18 (Fix MUI prop warnings in todo components)
   },
-}
+};

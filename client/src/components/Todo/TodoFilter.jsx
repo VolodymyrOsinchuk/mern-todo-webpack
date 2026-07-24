@@ -1,5 +1,5 @@
 // client/src/components/Todo/TodoFilter.jsx
-import React from 'react'
+import React, { memo } from "react";
 import {
   Box,
   FormControl,
@@ -11,60 +11,54 @@ import {
   Chip,
   IconButton,
   InputAdornment,
-} from '@mui/material'
-import SearchIcon from '@mui/icons-material/Search'
-import ClearIcon from '@mui/icons-material/Clear'
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ClearIcon from "@mui/icons-material/Clear";
 
-const priorityOptions = [
-  { value: 'all', label: 'Toutes les priorités' },
-  { value: 'high', label: 'Haute' },
-  { value: 'medium', label: 'Moyenne' },
-  { value: 'low', label: 'Basse' },
-]
+const DEFAULT_FILTERS = {
+  priority: "all",
+  status: "all",
+  search: "",
+};
 
-const statusOptions = [
-  { value: 'all', label: 'Tous les statuts' },
-  { value: 'completed', label: 'Terminé' },
-  { value: 'active', label: 'En cours' },
-]
+const PRIORITY_OPTIONS = [
+  { value: "all", label: "Toutes les priorités" },
+  { value: "high", label: "Haute" },
+  { value: "medium", label: "Moyenne" },
+  { value: "low", label: "Basse" },
+];
+
+const STATUS_OPTIONS = [
+  { value: "all", label: "Tous les statuts" },
+  { value: "completed", label: "Terminé" },
+  { value: "active", label: "En cours" },
+];
 
 const TodoFilter = ({ filters, onFilterChange }) => {
   const handleChange = (e) => {
-    const { name, value } = e.target
-    onFilterChange({ ...filters, [name]: value })
-  }
+    const { name, value } = e.target;
+    onFilterChange({ ...filters, [name]: value });
+  };
 
   const handleSearchChange = (e) => {
-    onFilterChange({ ...filters, search: e.target.value })
-  }
+    onFilterChange({ ...filters, search: e.target.value });
+  };
 
-  const clearSearch = () => {
-    onFilterChange({ ...filters, search: '' })
-  }
+  const clearSearch = () => onFilterChange({ ...filters, search: "" });
 
-  const getActiveFilterCount = () => {
-    let count = 0
-    if (filters.priority !== 'all') count++
-    if (filters.status !== 'all') count++
-    if (filters.search) count++
-    return count
-  }
+  const activeFilterCount =
+    (filters.priority !== "all" ? 1 : 0) +
+    (filters.status !== "all" ? 1 : 0) +
+    (filters.search ? 1 : 0);
 
-  const resetFilters = () => {
-    onFilterChange({
-      priority: 'all',
-      status: 'all',
-      search: '',
-    })
-  }
+  const resetFilters = () => onFilterChange(DEFAULT_FILTERS);
 
   return (
     <Box sx={{ mb: 3 }}>
       <Stack
-        direction={{ xs: 'column', sm: 'row' }}
+        direction={{ xs: "column", sm: "row" }}
         spacing={2}
-        alignItems="center"
-        sx={{ mb: 2 }}
+        sx={{ mb: 2, alignItems: { xs: "stretch", sm: "center" } }}
       >
         <TextField
           name="search"
@@ -74,24 +68,26 @@ const TodoFilter = ({ filters, onFilterChange }) => {
           variant="outlined"
           size="small"
           fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-            endAdornment: filters.search ? (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="clear search"
-                  onClick={clearSearch}
-                  edge="end"
-                  size="small"
-                >
-                  <ClearIcon fontSize="small" />
-                </IconButton>
-              </InputAdornment>
-            ) : null,
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon fontSize="small" />
+                </InputAdornment>
+              ),
+              endAdornment: filters.search ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="Effacer la recherche"
+                    onClick={clearSearch}
+                    edge="end"
+                    size="small"
+                  >
+                    <ClearIcon fontSize="small" />
+                  </IconButton>
+                </InputAdornment>
+              ) : undefined,
+            },
           }}
         />
 
@@ -105,7 +101,7 @@ const TodoFilter = ({ filters, onFilterChange }) => {
             label="Priorité"
             onChange={handleChange}
           >
-            {priorityOptions.map((option) => (
+            {PRIORITY_OPTIONS.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -123,7 +119,7 @@ const TodoFilter = ({ filters, onFilterChange }) => {
             label="Statut"
             onChange={handleChange}
           >
-            {statusOptions.map((option) => (
+            {STATUS_OPTIONS.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -132,12 +128,12 @@ const TodoFilter = ({ filters, onFilterChange }) => {
         </FormControl>
       </Stack>
 
-      {getActiveFilterCount() > 0 && (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      {activeFilterCount > 0 && (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <Chip
-            label={`${getActiveFilterCount()} filtre${
-              getActiveFilterCount() > 1 ? 's' : ''
-            } actif${getActiveFilterCount() > 1 ? 's' : ''}`}
+            label={`${activeFilterCount} filtre${activeFilterCount > 1 ? "s" : ""} actif${
+              activeFilterCount > 1 ? "s" : ""
+            }`}
             color="primary"
             size="small"
           />
@@ -150,7 +146,7 @@ const TodoFilter = ({ filters, onFilterChange }) => {
         </Box>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default TodoFilter
+export default memo(TodoFilter);

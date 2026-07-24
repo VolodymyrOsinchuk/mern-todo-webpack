@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Box,
   Typography,
@@ -9,33 +9,33 @@ import {
   CardActions,
   Container,
   Paper,
-} from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
-import TaskAltIcon from '@mui/icons-material/TaskAlt'
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted'
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt'
+} from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 
 const features = [
   {
     icon: <FormatListBulletedIcon sx={{ fontSize: 40 }} />,
-    title: 'Gestion des tâches',
+    title: "Gestion des tâches",
     description:
-      'Créez, modifiez et organisez vos tâches quotidiennes de manière simple et efficace.',
+      "Créez, modifiez et organisez vos tâches quotidiennes de manière simple et efficace.",
   },
   {
-    icon: <CheckCircleOutlineIcon sx={{ fontSize: 40 }} />,
-    title: 'Suivi de progression',
+    icon: <CheckCircleIcon sx={{ fontSize: 40 }} />,
+    title: "Suivi de progression",
     description:
-      'Suivez votre progression en marquant les tâches comme terminées au fur et à mesure.',
+      "Suivez votre progression en marquant les tâches comme terminées au fur et à mesure.",
   },
   {
     icon: <DoNotDisturbAltIcon sx={{ fontSize: 40 }} />,
-    title: 'Priorisation',
+    title: "Priorisation",
     description:
-      'Définissez des priorités pour vos tâches afin de vous concentrer sur ce qui est important.',
+      "Définissez des priorités pour vos tâches afin de vous concentrer sur ce qui est important.",
   },
-]
+];
 
 const Home = () => {
   return (
@@ -44,19 +44,19 @@ const Home = () => {
       <Paper
         elevation={0}
         sx={{
-          position: 'relative',
-          backgroundColor: 'primary.main',
-          color: 'primary.contrastText',
+          position: "relative",
+          backgroundColor: "primary.main",
+          color: "primary.contrastText",
           py: 8,
           px: 2,
           mb: 6,
           borderRadius: 2,
-          backgroundImage: 'linear-gradient(120deg, #1976d2, #42a5f5)',
-          overflow: 'hidden',
+          backgroundImage: "linear-gradient(120deg, #1976d2, #42a5f5)",
+          overflow: "hidden",
         }}
       >
         <Container maxWidth="md">
-          <Grid container spacing={4} alignItems="center">
+          <Grid container spacing={4} sx={{ alignItems: "center" }}>
             <Grid item xs={12} md={7}>
               <Typography
                 component="h1"
@@ -65,7 +65,7 @@ const Home = () => {
                 gutterBottom
                 sx={{
                   fontWeight: 700,
-                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  fontSize: { xs: "2.5rem", md: "3.5rem" },
                 }}
               >
                 Organisez vos tâches efficacement
@@ -96,19 +96,19 @@ const Home = () => {
               xs={12}
               md={5}
               sx={{
-                display: { xs: 'none', md: 'flex' },
-                justifyContent: 'center',
+                display: { xs: "none", md: "flex" },
+                justifyContent: "center",
               }}
             >
               <TaskAltIcon
                 sx={{
                   fontSize: 240,
-                  color: 'white',
+                  color: "white",
                   opacity: 0.15,
-                  position: 'absolute',
+                  position: "absolute",
                   right: -20,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
+                  top: "50%",
+                  transform: "translateY(-50%)",
                 }}
               />
             </Grid>
@@ -134,18 +134,18 @@ const Home = () => {
               <Card
                 variant="outlined"
                 sx={{
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
+                  height: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  "&:hover": {
+                    transform: "translateY(-5px)",
                     boxShadow: 3,
                   },
                 }}
               >
                 <CardContent sx={{ flexGrow: 1 }}>
-                  <Box sx={{ color: 'primary.main', mb: 2 }}>
+                  <Box sx={{ color: "primary.main", mb: 2 }}>
                     {feature.icon}
                   </Box>
                   <Typography gutterBottom variant="h5" component="h3">
@@ -169,11 +169,11 @@ const Home = () => {
       {/* CTA Section */}
       <Box
         sx={{
-          bgcolor: 'background.paper',
+          bgcolor: "background.paper",
           py: 6,
           borderTop: 1,
           borderBottom: 1,
-          borderColor: 'divider',
+          borderColor: "divider",
         }}
       >
         <Container maxWidth="md">
@@ -190,7 +190,7 @@ const Home = () => {
             Commencez dès maintenant à organiser vos tâches et à augmenter votre
             efficacité.
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
             <Button
               component={RouterLink}
               to="/todos"
@@ -204,7 +204,7 @@ const Home = () => {
         </Container>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

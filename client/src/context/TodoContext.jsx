@@ -1,90 +1,134 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react'
-import { fetchTodos, createTodo, updateTodo, deleteTodo } from '../services/api'
+// client/src/context/TodoContext.jsx
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { toast } from "react-toastify";
 
-const TodoContext = createContext()
+import {
+  fetchTodos,
+  createTodo,
+  updateTodo,
+  deleteTodo,
+} from "../services/api";
 
-const initialState = {
-  todos: [],
-  loading: false,
-  error: null,
-}
-
-function todoReducer(state, action) {
-  switch (action.type) {
-    case 'FETCH_TODOS_REQUEST':
-      return { ...state, loading: true, error: null }
-    case 'FETCH_TODOS_SUCCESS':
-      return { ...state, loading: false, todos: action.payload }
-    case 'FETCH_TODOS_FAILURE':
-      return { ...state, loading: false, error: action.payload }
-    case 'ADD_TODO_SUCCESS':
-      return { ...state, todos: [...state.todos, action.payload] }
-    case 'UPDATE_TODO_SUCCESS':
-      return {
-        ...state,
-        todos: state.todos.map((todo) =>
-          todo._id === action.payload._id ? action.payload : todo
-        ),
-      }
-    case 'DELETE_TODO_SUCCESS':
-      return {
-        ...state,
-        todos: state.todos.filter((todo) => todo._id !== action.payload),
-      }
-    default:
-      return state
-  }
-}
+const TodoContext = createContext(undefined);
 
 export function TodoProvider({ children }) {
-  const [state, dispatch] = useReducer(todoReducer, initialState)
+  const [todos, setTodos] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadTodos = async () => {
-      dispatch({ type: 'FETCH_TODOS_REQUEST' })
-      try {
-        const data = await fetchTodos()
-        dispatch({ type: 'FETCH_TODOS_SUCCESS', payload: data })
-      } catch (error) {
-        dispatch({ type: 'FETCH_TODOS_FAILURE', payload: error.message })
+  const loadTodos = useCallback(async (signal) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const data = await fetchTodos(signal);
+      setTodos(data);
+    } catch (err) {
+      if (err.name === "AbortError") return;
+      setError(err.message);
+      toast.error(err.message);
+    } finally {
+      if (!signal?.aborted) {
+        setLoading(false);
       }
     }
+  }, []);
 
-    loadTodos()
-  }, [])
+  useEffect(() => {
+    const controller = new AbortController();
+    loadTodos(controller.signal);
+    return () => controller.abort();
+  }, [loadTodos]);
 
-  const addTodo = async (todo) => {
+  const addTodo = useCallback(async (todo) => {
     try {
-      const newTodo = await createTodo(todo)
-      dispatch({ type: 'ADD_TODO_SUCCESS', payload: newTodo })
-    } catch (error) {
-      dispatch({ type: 'FETCH_TODOS_FAILURE', payload: error.message })
+      // La règle métier "une nouvelle tâche est active" vit ici,
+      // pas dans le formulaire qui ne devrait connaître que title/description/priority.
+      const newTodo = await createTodo({ ...todo, completed: false });
+      setTodos((prev) => [...prev, newTodo]);
+      toast.success("Todo ajouté avec succès");
+    } catch (err) {
+      toast.error(err.message);
+      throw err; // permet au formulaire de savoir que ça a échoué
     }
-  }
+  }, []);
 
-  const toggleTodo = async (id, completed) => {
+  const toggleTodo = useCallback(async (id, completed) => {
     try {
-      const updatedTodo = await updateTodo(id, { completed })
-      dispatch({ type: 'UPDATE_TODO_SUCCESS', payload: updatedTodo })
-    } catch (error) {
-      dispatch({ type: 'FETCH_TODOS_FAILURE', payload: error.message })
+      const updatedTodo = await updateTodo(id, { completed });
+      setTodos((prev) =>
+        prev.map((todo) => (todo._id === updatedTodo._id ? updatedTodo : todo)),
+      );
+      toast.success(
+        completed ? "Todo terminé ✔️" : "Todo marqué comme non terminé",
+      );
+    } catch (err) {
+      toast.error(err.message);
     }
-  }
+  }, []);
 
-  const removeTodo = async (id) => {
+  const editTodo = useCallback(async (id, updates) => {
     try {
-      await deleteTodo(id)
-      dispatch({ type: 'DELETE_TODO_SUCCESS', payload: id })
-    } catch (error) {
-      dispatch({ type: 'FETCH_TODOS_FAILURE', payload: error.message })
+      const updatedTodo = await updateTodo(id, updates);
+      setTodos((prev) =>
+        prev.map((todo) => (todo._id === updatedTodo._id ? updatedTodo : todo)),
+      );
+      toast.success("Todo modifié avec succès");
+    } catch (err) {
+      toast.error(err.message);
+      throw err;
     }
-  }
+  }, []);
 
-  return (
-    <TodoContext.Provider value={{ ...state, addTodo, toggleTodo, removeTodo }}>
-      {children}
-    </TodoContext.Provider>
-  )
+  const removeTodo = useCallback(async (id) => {
+    try {
+      await deleteTodo(id);
+      setTodos((prev) => prev.filter((todo) => todo._id !== id));
+      toast.success("Todo supprimé");
+    } catch (err) {
+      toast.error(err.message);
+    }
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      todos,
+      loading,
+      error,
+      addTodo,
+      toggleTodo,
+      editTodo,
+      removeTodo,
+      reloadTodos: loadTodos,
+    }),
+    [
+      todos,
+      loading,
+      error,
+      addTodo,
+      toggleTodo,
+      editTodo,
+      removeTodo,
+      loadTodos,
+    ],
+  );
+
+  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 }
 
-export const useTodo = () => useContext(TodoContext)
+export const useTodo = () => {
+  const context = useContext(TodoContext);
+  if (context === undefined) {
+    throw new Error(
+      "useTodo doit être utilisé à l'intérieur d'un TodoProvider",
+    );
+  }
+  return context;
+};

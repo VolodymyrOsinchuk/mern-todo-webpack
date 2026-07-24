@@ -2,7 +2,7 @@
 import React from 'react'
 import { Box, Typography, Button, Container, Paper } from '@mui/material'
 import { Link as RouterLink } from 'react-router-dom'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
+import ErrorIcon from "@mui/icons-material/Error";
 
 const NotFound = () => {
   return (
@@ -22,7 +22,7 @@ const NotFound = () => {
             borderColor: 'divider',
           }}
         >
-          <ErrorOutlineIcon
+          <ErrorIcon
             color="error"
             sx={{ fontSize: 80, mb: 2, opacity: 0.8 }}
           />

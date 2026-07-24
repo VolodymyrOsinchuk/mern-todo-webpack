@@ -1,11 +1,13 @@
-import React from 'react'
-import { Box, Typography, Divider, Container, Paper } from '@mui/material'
-import TodoForm from '../components/Todo/TodoForm'
-import TodoList from '../components/Todo/TodoList'
-import { useTodo } from '../context/TodoContext'
+// client/src/pages/TodoPage.jsx
+import React from "react";
+import { Box, Typography, Divider, Container } from "@mui/material";
+
+import TodoForm from "../components/Todo/TodoForm";
+import TodoList from "../components/Todo/TodoList";
+import { useTodo } from "../context/TodoContext";
 
 const TodoPage = () => {
-  const { addTodo } = useTodo()
+  const { addTodo } = useTodo();
 
   return (
     <Box>
@@ -19,7 +21,7 @@ const TodoPage = () => {
           Mes tâches
         </Typography>
 
-        <TodoForm addTodo={addTodo} />
+        <TodoForm onSubmit={addTodo} />
 
         <Divider sx={{ my: 4 }} />
 
@@ -32,7 +34,7 @@ const TodoPage = () => {
         <TodoList />
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default TodoPage
+export default TodoPage;

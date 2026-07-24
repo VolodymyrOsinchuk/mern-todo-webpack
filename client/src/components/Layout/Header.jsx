@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link as RouterLink, useLocation } from 'react-router-dom'
+import React, { useState } from "react";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -14,37 +14,37 @@ import {
   ListItemText,
   useMediaQuery,
   Container,
-} from '@mui/material'
-import { useTheme } from '@mui/material/styles'
-import MenuIcon from '@mui/icons-material/Menu'
-import ChecklistIcon from '@mui/icons-material/Checklist'
+} from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChecklistIcon from "@mui/icons-material/Checklist";
 
 const navigation = [
-  { name: 'Accueil', path: '/' },
-  { name: 'Todos', path: '/todos' },
-]
+  { name: "Accueil", path: "/" },
+  { name: "Todos", path: "/todos" },
+];
 
 const Header = () => {
-  const [mobileOpen, setMobileOpen] = useState(false)
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-  const location = useLocation()
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const location = useLocation();
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
+    setMobileOpen(!mobileOpen);
+  };
 
   const isActive = (path) => {
-    return location.pathname === path
-  }
+    return location.pathname === path;
+  };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           p: 2,
         }}
       >
@@ -61,19 +61,19 @@ const Header = () => {
               to={item.path}
               selected={isActive(item.path)}
               sx={{
-                '&.Mui-selected': {
-                  bgcolor: 'primary.light',
-                  '&:hover': {
-                    bgcolor: 'primary.light',
+                "&.Mui-selected": {
+                  bgcolor: "primary.light",
+                  "&:hover": {
+                    bgcolor: "primary.light",
                   },
                 },
               }}
             >
               <ListItemText
                 primary={item.name}
-                primaryTypographyProps={{
-                  textAlign: 'center',
-                  fontWeight: isActive(item.path) ? 'bold' : 'normal',
+                slotProps={{
+                  textAlign: "center",
+                  fontWeight: isActive(item.path) ? "bold" : "normal",
                 }}
               />
             </ListItemButton>
@@ -81,7 +81,7 @@ const Header = () => {
         ))}
       </List>
     </Box>
-  )
+  );
 
   return (
     <AppBar position="sticky" color="default" elevation={1}>
@@ -89,22 +89,22 @@ const Header = () => {
         <Toolbar
           sx={{
             px: { xs: 1, sm: 2 },
-            justifyContent: 'space-between',
+            justifyContent: "space-between",
           }}
         >
           {/* Logo & Title */}
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <ChecklistIcon sx={{ mr: 1, color: 'primary.main' }} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <ChecklistIcon sx={{ mr: 1, color: "primary.main" }} />
             <Typography
               variant="h6"
               component={RouterLink}
               to="/"
               sx={{
                 fontWeight: 600,
-                color: 'text.primary',
-                textDecoration: 'none',
-                display: 'flex',
-                alignItems: 'center',
+                color: "text.primary",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
               }}
             >
               Todo App
@@ -113,16 +113,16 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           {!isMobile && (
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
               {navigation.map((item) => (
                 <Button
                   key={item.name}
                   component={RouterLink}
                   to={item.path}
-                  color={isActive(item.path) ? 'primary' : 'inherit'}
+                  color={isActive(item.path) ? "primary" : "inherit"}
                   sx={{
                     mx: 1,
-                    fontWeight: isActive(item.path) ? 'bold' : 'normal',
+                    fontWeight: isActive(item.path) ? "bold" : "normal",
                   }}
                 >
                   {item.name}
@@ -155,14 +155,14 @@ const Header = () => {
           keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: 240 },
         }}
       >
         {drawer}
       </Drawer>
     </AppBar>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

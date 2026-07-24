@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   Box,
   Container,
@@ -7,37 +7,37 @@ import {
   Divider,
   Stack,
   IconButton,
-} from '@mui/material'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import TwitterIcon from '@mui/icons-material/Twitter'
+} from "@mui/material";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import TwitterIcon from "@mui/icons-material/Twitter";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
     <Box
       component="footer"
       sx={{
         py: 3,
-        mt: 'auto',
-        backgroundColor: 'background.paper',
-        borderTop: '1px solid',
-        borderColor: 'divider',
+        mt: "auto",
+        backgroundColor: "background.paper",
+        borderTop: "1px solid",
+        borderColor: "divider",
       }}
     >
       <Container maxWidth="lg">
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', sm: 'row' },
-            justifyContent: 'space-between',
-            alignItems: { xs: 'center', sm: 'flex-start' },
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "center", sm: "flex-start" },
             gap: 2,
           }}
         >
           {/* Left side */}
-          <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
+          <Box sx={{ textAlign: { xs: "center", sm: "left" } }}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               MERN Todo App
             </Typography>
@@ -47,13 +47,13 @@ const Footer = () => {
           </Box>
 
           {/* Right side */}
-          <Box sx={{ textAlign: { xs: 'center', sm: 'right' } }}>
+          <Box sx={{ textAlign: { xs: "center", sm: "right" } }}>
             {/* Social Icons */}
             <Stack
               direction="row"
               spacing={1}
-              justifyContent={{ xs: 'center', sm: 'flex-end' }}
               mb={2}
+              sx={{ justifyContent: { xs: "center", sm: "flex-end" } }}
             >
               <IconButton color="inherit" aria-label="GitHub" size="small">
                 <GitHubIcon fontSize="small" />
@@ -68,9 +68,9 @@ const Footer = () => {
 
             {/* Links */}
             <Stack
-              direction={{ xs: 'column', sm: 'row' }}
+              direction={{ xs: "column", sm: "row" }}
               spacing={{ xs: 1, sm: 2 }}
-              justifyContent={{ xs: 'center', sm: 'flex-end' }}
+              sx={{ justifyContent: { xs: "center", sm: "flex-end" } }}
               mb={2}
             >
               <Link href="#" color="inherit" underline="hover">
@@ -90,15 +90,15 @@ const Footer = () => {
 
         {/* Copyright */}
         <Typography variant="body2" color="text.secondary" align="center">
-          {'Copyright © '}
+          {"Copyright © "}
           <Link color="inherit" href="#">
             MERN Todo App
-          </Link>{' '}
+          </Link>{" "}
           {currentYear}
         </Typography>
       </Container>
     </Box>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;
