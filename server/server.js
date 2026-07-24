@@ -43,7 +43,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/todos", todoRoutes);
 
-if (isProduction) {
+if (isProduction && !isVercel) {
   const clientDistPath = path.join(__dirname, "../client/dist");
   app.use(express.static(clientDistPath));
 
