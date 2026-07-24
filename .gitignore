@@ -8,8 +8,5 @@ yarn-error.log
 dist/
 build/
 coverage/
-<<<<<<< HEAD
 .qodo/
-=======
->>>>>>> 0a27e18 (Fix MUI prop warnings in todo components)
 .vercel
