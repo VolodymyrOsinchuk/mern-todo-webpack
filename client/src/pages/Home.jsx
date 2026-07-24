@@ -57,7 +57,7 @@ const Home = () => {
       >
         <Container maxWidth="md">
           <Grid container spacing={4} sx={{ alignItems: "center" }}>
-            <Grid item xs={12} md={7}>
+            <Grid  size={{ xs: 12, md: 7 }}>
               <Typography
                 component="h1"
                 variant="h2"
@@ -73,7 +73,7 @@ const Home = () => {
               <Typography
                 variant="h5"
                 color="inherit"
-                paragraph
+           
                 sx={{ opacity: 0.9, mb: 4 }}
               >
                 Une application simple mais puissante pour gérer vos tâches
@@ -92,9 +92,8 @@ const Home = () => {
               </Button>
             </Grid>
             <Grid
-              item
-              xs={12}
-              md={5}
+         
+              size={{ xs: 12, md: 5 }}
               sx={{
                 display: { xs: "none", md: "flex" },
                 justifyContent: "center",
@@ -130,7 +129,7 @@ const Home = () => {
 
         <Grid container spacing={4}>
           {features.map((feature, index) => (
-            <Grid item xs={12} md={4} key={index}>
+            <Grid size={{ xs: 12, md: 4 }} key={index}>
               <Card
                 variant="outlined"
                 sx={{
@@ -184,7 +183,7 @@ const Home = () => {
             variant="body1"
             align="center"
             color="text.secondary"
-            paragraph
+            
             sx={{ mb: 4 }}
           >
             Commencez dès maintenant à organiser vos tâches et à augmenter votre
