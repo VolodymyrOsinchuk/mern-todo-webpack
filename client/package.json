@@ -16,16 +16,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-<<<<<<< HEAD
-    "@emotion/react": "^11.11.0",
-    "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^6.0.0",
-    "@mui/material": "^6.0.0",
-    "date-fns": "^4.1.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^7.0.0"
-=======
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/icons-material": "^9.2.0",
@@ -35,7 +25,6 @@
     "react-dom": "^19.2.8",
     "react-router-dom": "^7.18.1",
     "react-toastify": "^11.1.0"
->>>>>>> 0a27e18 (Fix MUI prop warnings in todo components)
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",

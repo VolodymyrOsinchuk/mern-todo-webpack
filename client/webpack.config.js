@@ -64,17 +64,6 @@ module.exports = {
       : []),
   ],
   devServer: {
-<<<<<<< HEAD
-    static: {
-      directory: path.join(__dirname, 'public'),
-    },
-    historyApiFallback: true,
-    port: 3000,
-    hot: true,
-    proxy: {
-      '/api': 'http://localhost:5001',
-    },
-=======
     static: path.resolve(__dirname, "public"),
     historyApiFallback: true,
     port: 3000,
@@ -85,6 +74,5 @@ module.exports = {
         target: API_PROXY_TARGET,
       },
     ],
->>>>>>> 0a27e18 (Fix MUI prop warnings in todo components)
   },
 };
