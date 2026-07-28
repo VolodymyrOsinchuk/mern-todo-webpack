@@ -7,13 +7,12 @@ const path = require("path");
 
 const connectDB = require("./config/db");
 const todoRoutes = require("./routes/todo");
+const asyncHandler = require("./middleware/asyncHandler");
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 const isProduction = process.env.NODE_ENV === "production";
 const isVercel = !!process.env.VERCEL;
-
-connectDB();
 
 if (isProduction) {
   app.set("trust proxy", 1);
@@ -41,7 +40,14 @@ app.get("/api/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-app.use("/api/todos", todoRoutes);
+app.use(
+  "/api/todos",
+  asyncHandler(async (req, res, next) => {
+    await connectDB();
+    next();
+  }),
+  todoRoutes,
+);
 
 if (isProduction && !isVercel) {
   const clientDistPath = path.join(__dirname, "../client/dist");
@@ -60,6 +66,10 @@ app.use("/api", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  if (res.headersSent) {
+    return next(err);
+  }
+
   console.error(err);
 
   if (err.name === "CastError") {
@@ -70,6 +80,14 @@ app.use((err, req, res, next) => {
     return res.status(400).json({ message: err.message });
   }
 
+  if (
+    err.statusCode === 503 ||
+    err.name === "MongooseServerSelectionError" ||
+    err.name === "MongoServerSelectionError"
+  ) {
+    return res.status(503).json({ message: "Database connection unavailable" });
+  }
+
   const statusCode = err.statusCode || 500;
   res.status(statusCode).json({
     message: statusCode === 500 ? "Server Error" : err.message,
@@ -77,9 +95,16 @@ app.use((err, req, res, next) => {
 });
 
 if (!isVercel && require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`Server running locally on port ${PORT}`);
-  });
+  connectDB()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.log(`Server running locally on port ${PORT}`);
+      });
+    })
+    .catch((error) => {
+      console.error(`Database connection failed: ${error.message}`);
+      process.exit(1);
+    });
 }
 
 module.exports = app;
