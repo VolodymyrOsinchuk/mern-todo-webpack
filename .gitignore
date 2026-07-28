@@ -10,3 +10,4 @@ build/
 coverage/
 .qodo/
 .vercel
+.env*
